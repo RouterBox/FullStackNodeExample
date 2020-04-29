@@ -1,0 +1,35 @@
+.centerLogo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+  }
+  .centerDiv {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+  }
+  .centerButton {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+  }
+  #chatForm{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	border-width: 1px;
+	border-style: solid;
+	padding: 5px;
+  }
+  #chatRoomBox{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	height: 20%;
+	border-width: 1px;
+	border-style: solid;
+	padding: 5px;
+  }

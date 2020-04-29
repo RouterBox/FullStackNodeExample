@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<title>FullStackNodeExample</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="/main.css" >
+	</head>
+	<body onload="onBodyLoad()">
+		<script>
+			function onBodyLoad(){
+				//setInterval(refreshChatBox, 1000);
+				refreshChatBox();
+			}
+
+			function refreshChatBox(){
+				jQuery.ajax ({
+					url: "api/chat",
+					type: "GET",
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success: function(responseBody){
+						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
+						console.log("success: "+responseBody.chats.length);
+						$("#chatRoomBox").empty();
+						for(var index in responseBody.chats){
+							var chatObject = responseBody.chats[index];
+							var _id = chatObject._id;
+							var glyphps = '<div class="chatLine"><a onclick="onTrashClicked(\''+_id+'\')"><span class="glyphicon glyphicon-trash"></a>&nbsp;</span>&nbsp;&nbsp;&nbsp;';
+							var chatLine = glyphps+chatObject.name+' ('+chatObject.date+'): '+chatObject.message+'</div><br/>';
+							$("#chatRoomBox").append(chatLine);
+						}
+					} 
+				});
+			}
+
+			function onTrashClicked(_id){
+				console.log("trashClicked: "+_id);
+				var postBody = {
+					"_id":_id
+				}
+				jQuery.ajax ({
+					url: "api/chat",
+					type: "DELETE",
+					data: JSON.stringify(postBody),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success: function(data){
+						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
+						alert("baleeted");
+						refreshChatBox();
+					}
+				});
+			}
+
+			function onChatSubmitBtnClicked(){
+				var postBody = {
+					"name": $("#name").val(),
+					"message": $("#message").val()
+				}
+				jQuery.ajax ({
+					url: "api/chat",
+					type: "POST",
+					data: JSON.stringify(postBody),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success: function(data){
+						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
+						alert("success");
+						refreshChatBox();
+					}
+				});
+
+			}
+
+		</script>
+
+		<img id="Logo" class="centerLogo" src="/nraLogo.jpg" />
+		<br/><br/><br/>
+
+		<div id="chatForm">
+			<div class="centerDiv">
+				<label class="col-md-2">Name: </label> 
+				<input id="name" name="name" class="col-md-6" type="text"></input><br/>
+			</div>
+			<br/>
+			<div class="centerDiv">
+				<label class="col-md-2">Message: </label> 
+				<input id="message" name="message" class="col-md-10" type="text"></input><br/>
+			</div>
+			<br/>
+			<div class="centerDiv">
+				<button id="chatSubmitBtn" onclick="onChatSubmitBtnClicked()">Submit</button>
+			</div>
+		</div>
+
+		<br/><br/><br/>
+
+		<div class="centerDiv">
+			<label>Chat Room:</label>
+		</div>
+		
+		<div id="chatRoomBox">
+			
+		</div>
+
+	</body>
+</html>
