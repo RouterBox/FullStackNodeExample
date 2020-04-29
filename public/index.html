@@ -10,9 +10,12 @@
 	</head>
 	<body onload="onBodyLoad()">
 		<script>
+
+			var chatsMap = {};
+
 			function onBodyLoad(){
-				//setInterval(refreshChatBox, 1000);
-				refreshChatBox();
+				setInterval(refreshChatBox, 1000);
+				//refreshChatBox();
 			}
 
 			function refreshChatBox(){
@@ -28,6 +31,7 @@
 						for(var index in responseBody.chats){
 							var chatObject = responseBody.chats[index];
 							var _id = chatObject._id;
+							chatsMap[_id] = chatObject;
 							var glyphps = '<div class="chatLine"><a onclick="onTrashClicked(\''+_id+'\')"><span class="glyphicon glyphicon-trash"></a>&nbsp;</span>&nbsp;&nbsp;&nbsp;';
 							var chatLine = glyphps+chatObject.name+' ('+chatObject.date+'): '+chatObject.message+'</div><br/>';
 							$("#chatRoomBox").append(chatLine);
@@ -38,9 +42,7 @@
 
 			function onTrashClicked(_id){
 				console.log("trashClicked: "+_id);
-				var postBody = {
-					"_id":_id
-				}
+				var postBody = chatsMap[_id];
 				jQuery.ajax ({
 					url: "api/chat",
 					type: "DELETE",
@@ -48,8 +50,7 @@
 					dataType: "json",
 					contentType: "application/json; charset=utf-8",
 					success: function(data){
-						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
-						alert("baleeted");
+						//alert("deleted");
 						refreshChatBox();
 					}
 				});
@@ -67,8 +68,7 @@
 					dataType: "json",
 					contentType: "application/json; charset=utf-8",
 					success: function(data){
-						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
-						alert("success");
+						//alert("success");
 						refreshChatBox();
 					}
 				});
@@ -82,13 +82,13 @@
 
 		<div id="chatForm">
 			<div class="centerDiv">
-				<label class="col-md-2">Name: </label> 
+				<label class="col-md-3">Name: </label> 
 				<input id="name" name="name" class="col-md-6" type="text"></input><br/>
 			</div>
 			<br/>
 			<div class="centerDiv">
-				<label class="col-md-2">Message: </label> 
-				<input id="message" name="message" class="col-md-10" type="text"></input><br/>
+				<label class="col-md-3">Message: </label> 
+				<input id="message" name="message" class="col-md-9" type="text"></input><br/>
 			</div>
 			<br/>
 			<div class="centerDiv">

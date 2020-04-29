@@ -66,13 +66,14 @@ app.put('/api/chat', (req, res) => {
 	});
 });
 app.delete('/api/chat', (req, res) => {
-	var idToDelete = req.body._id;
-
-	chatCollection.deleteOne({_id:idToDelete}, function(err, obj) {
+	var my_id = req.body._id;
+	var chatToDelete = req.body;
+	delete chatToDelete._id
+	console.log("Deleting: "+chatToDelete.message);
+	chatCollection.findOneAndDelete({_id:ObjectId(my_id)}, function(err, obj) {
 		if (err) throw err;
-		console.log("1 document deleted: "+idToDelete);
 		res.json({
-			message: "Deleted "+idToDelete
+			message: "Deleted "+chatToDelete._id
 		});
 	  });
 });
@@ -89,6 +90,7 @@ app.listen(8080, function() {
 //mongo
 var MongoClient = require('mongodb').MongoClient;
 var connectionString = 'mongodb://localhost:27017/chatDB';
+var ObjectId = require('mongodb').ObjectId;
 var db;
 var chatDB;
 var chatCollection;
