@@ -25,7 +25,6 @@
 					dataType: "json",
 					contentType: "application/json; charset=utf-8",
 					success: function(responseBody){
-						//$( "#result" ).html( "Welcome "+data.firstName+"!  Your authorization bearer token is: "+data.token );
 						console.log("success: "+responseBody.chats.length);
 						$("#chatRoomBox").empty();
 						for(var index in responseBody.chats){
