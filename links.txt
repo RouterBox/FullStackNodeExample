@@ -1,0 +1,4 @@
+https://www.mongodb.com/download-center/community
+https://nodejs.org/en/download/releases/
+https://expressjs.com/
+https://code.visualstudio.com/Download
